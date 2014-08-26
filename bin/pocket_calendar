@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'pocket_calendar'
+PocketCalendar::Config.load ARGV
+PocketCalendar::Runner.invoke
