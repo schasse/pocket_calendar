@@ -2,7 +2,7 @@ module PocketCalendar
   class Runner
     class << self
       def invoke
-        create_pdf_from rendered_templates_from jira_issues
+        create_pdf_from rendered_templates_from
       end
 
       private

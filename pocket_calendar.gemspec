@@ -22,10 +22,7 @@ desc
 
   s.executables  = %w(pocket_calendar)
 
-  s.add_runtime_dependency 'json'
-  s.add_runtime_dependency 'restclient'
   s.add_runtime_dependency 'activesupport'
-  s.add_runtime_dependency 'prawn-svg'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-its'
