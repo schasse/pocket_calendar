@@ -1,5 +1,5 @@
 module PocketCalendar
-  class CalendarRenderer < Struct.new(:from_date, :to_date, :minimum_page_count)
+  class CalendarRenderer
     def rendered_templates
       [[timetable_page] + week_double_pages + note_pages].flatten
     end
@@ -33,8 +33,8 @@ module PocketCalendar
       end.flatten + [left_note_page]
     end
 
-    def year_week_pairs(current_date = from_date)
-      if to_date < current_date
+    def year_week_pairs(current_date = PocketCalendar::Config.from)
+      if PocketCalendar::Config.to < current_date
         []
       else
         [[current_date.year, current_date.cweek]] +
@@ -48,7 +48,7 @@ module PocketCalendar
 
     def page_count
       [
-        next_dividable_by_4(minimum_page_count),
+        next_dividable_by_4(PocketCalendar::Config.minimum_page_count),
         next_dividable_by_4(pages_without_note_pages)
       ].max
     end

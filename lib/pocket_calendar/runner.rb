@@ -12,11 +12,7 @@ module PocketCalendar
       end
 
       def rendered_templates
-        CalendarRenderer.new(
-          PocketCalendar::Config.from,
-          PocketCalendar::Config.to,
-          PocketCalendar::Config.minimum_page_count)
-          .rendered_templates
+        CalendarRenderer.new.rendered_templates
       end
     end
   end

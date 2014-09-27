@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe PocketCalendar::CalendarRenderer do
-  let(:renderer) do
-    PocketCalendar::CalendarRenderer.new from_date, to_date, minimum_page_count
+  let(:renderer) { PocketCalendar::CalendarRenderer.new }
+
+  before do
+    PocketCalendar::Config.from = Date.new 2014, 10, 1
+    PocketCalendar::Config.to = Date.new 2015, 4, 1
+    PocketCalendar::Config.minimum_page_count = 60
   end
-  let(:from_date) { Date.new 2014, 10, 1 }
-  let(:to_date) { Date.new 2015, 4, 1 }
-  let(:minimum_page_count) { 60 }
 
   describe '#rendered_templates' do
     subject(:rendered_templates) { renderer.rendered_templates }
