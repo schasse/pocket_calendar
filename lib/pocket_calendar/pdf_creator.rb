@@ -2,6 +2,7 @@ module PocketCalendar
   class PdfCreator < Struct.new(:svgs)
     def create_pdf
       concatenate_pdfs
+      make_printable if PocketCalendar::Config.printversion
       cleanup
     end
 
@@ -9,6 +10,10 @@ module PocketCalendar
 
     def concatenate_pdfs
       `pdftk #{pdf_files.join(' ')} cat output #{PocketCalendar::Config.output}`
+    end
+
+    def make_printable
+      `pdfbook --short-edge #{PocketCalendar::Config.output}`
     end
 
     def cleanup

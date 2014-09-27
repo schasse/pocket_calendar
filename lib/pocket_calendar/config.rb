@@ -7,14 +7,13 @@ module PocketCalendar
     LOCAL_CONFIG = File.expand_path '.pocket_calendar'
 
     OPTIONS = {
-      # TODO: add option printable
       from: [
         '-f', '--from DATE', Date,
-        'The smallest date the calendar should include.'
+        'The smallest date the calendar should include. Format yyy-mm-dd.'
       ],
       to: [
         '-t', '--to DATE', Date,
-        'The biggest date the calendar should include.'
+        'The biggest date the calendar should include. Format yyy-mm-dd.'
       ],
       language: [
         '-l', '--language LANGUAGE', [:de, :en],
@@ -24,7 +23,8 @@ module PocketCalendar
       minimum_page_count: [
         '-mpg', '--minimum_page_count N', Integer,
         'The calendar will have at least N pages.'
-      ]
+      ],
+      printversion: ['-p', '--printversion', 'Sorts the pdf to be printready.']
     }
 
     OPTIONS.keys.each do |config|

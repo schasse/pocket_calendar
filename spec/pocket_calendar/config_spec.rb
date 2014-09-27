@@ -26,5 +26,6 @@ describe PocketCalendar::Config do
     let(:argv) { ['-f', '2014-10-1'] }
     before { PocketCalendar::Config.load argv }
     its(:from) { should eq Date.new(2014, 10, 1) }
+    its(:printversion) { should be_nil }
   end
 end
