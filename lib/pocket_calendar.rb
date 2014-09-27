@@ -6,6 +6,7 @@ require 'active_support/core_ext/hash'
 require 'yaml'
 require 'erb'
 require 'optparse'
+require 'optparse/date'
 
 module PocketCalendar
   # TODO: difference expand_path and join

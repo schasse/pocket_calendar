@@ -6,17 +6,28 @@ module PocketCalendar
     HOME_CONFIG = File.expand_path '~/.pocket_calendar'
     LOCAL_CONFIG = File.expand_path '.pocket_calendar'
 
-    AVAILABLE_OPTIONS = {
-      # TODO: from and to as dates, language some options
+    OPTIONS = {
       # TODO: add option printable
-      from: 'The smallest date the calendar should include.',
-      to: 'The biggest date the calendar should include.',
-      language: 'Specifies the language of the calendar.',
-      output: 'Output file name.',
-      minimum_page_count: 'The calendar will have at least that page count.'
+      from: [
+        '-f', '--from DATE', Date,
+        'The smallest date the calendar should include.'
+      ],
+      to: [
+        '-t', '--to DATE', Date,
+        'The biggest date the calendar should include.'
+      ],
+      language: [
+        '-l', '--language LANGUAGE', [:de, :en],
+        'Specifies the language of the calendar.'
+      ],
+      output: ['-o', '--output FILE', 'Output file name.'],
+      minimum_page_count: [
+        '-mpg', '--minimum_page_count N', Integer,
+        'The calendar will have at least N pages.'
+      ]
     }
 
-    AVAILABLE_OPTIONS.keys.each do |config|
+    OPTIONS.keys.each do |config|
       config_accessor config
     end
 
@@ -27,7 +38,7 @@ module PocketCalendar
       end
 
       def reset
-        AVAILABLE_OPTIONS.keys.each do |option|
+        OPTIONS.keys.each do |option|
           send "#{option}=", nil
         end
         I18n.locale = 'en'
@@ -37,7 +48,7 @@ module PocketCalendar
 
       def configure_pocket_calendar(argv)
         config = new argv
-        AVAILABLE_OPTIONS.keys.each do |option|
+        OPTIONS.keys.each do |option|
           option_value = config.options[option]         ||
             config.local_config[option.to_s]            ||
             config.home_config[option.to_s]             ||
@@ -84,8 +95,8 @@ module PocketCalendar
       OptionParser.new do |opts|
         opts.banner = 'Usage: pocket_calendar [options]'
 
-        AVAILABLE_OPTIONS.each do |option, description|
-          add_option opts, option, description
+        OPTIONS.values.each do |option|
+          add_option opts, option
         end
 
         opts.on_tail('--version', 'Show version.') do
@@ -95,12 +106,8 @@ module PocketCalendar
       end
     end
 
-    def add_option(opts, option, description)
-      opts.on(
-        "-#{option.to_s.chars.first}",
-        "--#{option} #{option.to_s.upcase}",
-        description) do |option_value|
-
+    def add_option(opts, option)
+      opts.on(*option) do |option_value|
         @options[option] = option_value
       end
     end
