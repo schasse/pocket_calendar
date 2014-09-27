@@ -3,6 +3,7 @@ require 'spec_helper'
 describe PocketCalendar::WeekPageRenderer do
   subject(:renderer) { PocketCalendar::WeekPageRenderer.new 2014, 39 }
   its(:monday) { should eq 'Monday' }
+  its(:sunday) { should eq 'Sunday' }
   its(:mondays_day_of_month) { should eq 22 }
   its(:month_name) { should eq 'September' }
   its(:week) { should eq 'week' }

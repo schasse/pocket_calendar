@@ -1,8 +1,8 @@
 require 'cgi'
 require 'active_support/configurable'
 require 'active_support/concern'
-# TODO: remove hash extension?
-require 'active_support/core_ext/hash'
+require 'active_support/core_ext/date'
+require 'i18n'
 require 'yaml'
 require 'erb'
 require 'optparse'
