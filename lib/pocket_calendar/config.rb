@@ -60,10 +60,10 @@ module PocketCalendar
 
       def configure_i18n
         # TODO: configurable locale file
+        I18n.enforce_available_locales = false
         I18n.load_path = Dir[PocketCalendar::LOCALES_PATH + '/*.yml']
         I18n.backend.load_translations
         I18n.locale = language
-        I18n.enforce_available_locales = false
       end
     end
 
