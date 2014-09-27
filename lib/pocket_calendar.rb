@@ -1,5 +1,6 @@
 require 'cgi'
 require 'active_support/configurable'
+require 'active_support/concern'
 # TODO: remove hash extension?
 require 'active_support/core_ext/hash'
 require 'yaml'
@@ -15,4 +16,5 @@ module PocketCalendar
   CONFIG_PATH = File.expand_path '../../config', __FILE__
 end
 
+Dir[PocketCalendar::LIB_PATH + '/**/concerns/*.rb'].each { |file| require file }
 Dir[PocketCalendar::LIB_PATH + '/**/*.rb'].each { |file| require file }

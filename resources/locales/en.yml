@@ -19,6 +19,7 @@ en:
       - year
       - month
       - day
+    week: week
 
   time:
     formats:

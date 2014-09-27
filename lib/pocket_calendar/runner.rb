@@ -12,7 +12,7 @@ module PocketCalendar
       end
 
       def rendered_templates_from(jira_issues)
-        Renderer.new(jira_issues).rendered_templates
+        CalendarRenderer.new(jira_issues).rendered_templates
       end
 
       def jira_issues

@@ -1,36 +1,32 @@
 module PocketCalendar
-  class WeekPageRenderer < Struct.new(:year, :week)
-    def rendered_template
-    end
+  class WeekPageRenderer < Struct.new(:year, :week_of_year)
+    include Renderer
+    include RenderHelper
 
-    {
-      monday: 1,
-      tuesday: 2,
-      wednesday: 3,
-      thursday: 4,
-      friday: 5,
-      saturday: 6,
-      sunday: 7
-    }.each do |day, cwday|
-      define_method(day) { translate_day cwday }
+    TEMPLATE_PATH = File.expand_path(
+      'week_page.svg', PocketCalendar::TEMPLATES_PATH)
 
-      define_method("#{day}s_day_of_month") do
-        monday_date.days_since(cwday - 1).day
-      end
-    end
+    helpers_for :week_day_translations, :days_of_month
 
     def month_name
-      I18n.translate('date.month_names')[monday_date.month]
+      [
+        I18n.translate('date.month_names')[monday_date.month],
+        I18n.translate('date.month_names')[sunday_date.month]
+      ].uniq.join ' - '
+    end
+
+    def week
+      I18n.translate 'date.week'
     end
 
     private
 
     def monday_date
-      @monday_date ||= Date.commercial year, week
+      @monday_date ||= Date.commercial year, week_of_year
     end
 
-    def translate_day(cwday)
-      I18n.translate('date.day_names')[cwday]
+    def sunday_date
+      @sunday_date ||= monday_date.days_since 7
     end
   end
 end
