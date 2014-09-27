@@ -1,7 +1,7 @@
 module PocketCalendar
-  class TemplateRenderer < Struct.new(:issues)
+  class Renderer < Struct.new(:from_date, :to_date)
     TEMPLATE_PATH = File.expand_path(
-      '9_issues_for_dina4.svg', PocketCalendar::RESOURCES_PATH)
+      '9_issues_for_dina4.svg', PocketCalendar::TEMPLATES_PATH)
 
     def rendered_templates
       issue_summaries.each_slice(9).map do |issue_summaries_slice|

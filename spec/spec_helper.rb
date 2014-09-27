@@ -12,6 +12,10 @@ require 'pocket_calendar'
 RSpec.configure do |config|
   config.order = 'random'
 
+  config.before(:all) do
+    PocketCalendar::Config.send :configure_i18n
+  end
+
   config.before(:each) do
     PocketCalendar::Config.reset
   end

@@ -7,10 +7,10 @@ module PocketCalendar
     LOCAL_CONFIG = File.expand_path '.pocket_calendar'
 
     AVAILABLE_OPTIONS = {
-      domain: 'The jira domain.',
-      user: 'Username for basic auth.',
-      password: 'Password for basic auth.',
-      query: 'A query defined in jql (jira query language).',
+      # TODO: from and to as dates, language some options
+      from: 'The smallest date the calendar should include.',
+      to: 'The biggest date the calendar should include.',
+      language: 'Specifies the language of the calendar.',
       output: 'Output file name.'
     }
 
@@ -20,26 +20,41 @@ module PocketCalendar
 
     class << self
       def load(argv = nil)
-        config = new argv
-        AVAILABLE_OPTIONS.keys.each do |option|
-          option_value = config.options[option]    ||
-            config.local_config[option.to_s]       ||
-            config.home_config[option.to_s]        ||
-            ENV['POCKET_CALENDAR' + option.to_s.upcase] ||
-            config.default_config[option.to_s]
-          send "#{option}=", option_value
-        end
+        configure_pocket_calendar argv
+        configure_i18n
       end
 
       def reset
         AVAILABLE_OPTIONS.keys.each do |option|
           send "#{option}=", nil
         end
+        I18n.locale = 'en'
+      end
+
+      private
+
+      def configure_pocket_calendar(argv)
+        config = new argv
+        AVAILABLE_OPTIONS.keys.each do |option|
+          option_value = config.options[option]         ||
+            config.local_config[option.to_s]            ||
+            config.home_config[option.to_s]             ||
+            ENV['POCKET_CALENDAR' + option.to_s.upcase] ||
+            config.default_config[option.to_s]
+          send "#{option}=", option_value
+        end
+      end
+
+      def configure_i18n
+        # TODO: configurable locale file
+        I18n.load_path = Dir[PocketCalendar::LOCALES_PATH + '/*.yml']
+        I18n.backend.load_translations
+        I18n.locale = language
       end
     end
 
     def default_config
-      @defaule_config ||= YAML.load File.read DEFAULT_CONFIG
+      @default_config ||= YAML.load File.read DEFAULT_CONFIG
     end
 
     def home_config

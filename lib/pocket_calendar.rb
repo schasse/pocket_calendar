@@ -1,14 +1,17 @@
 require 'cgi'
 require 'active_support/configurable'
+# TODO: remove hash extension?
 require 'active_support/core_ext/hash'
 require 'yaml'
 require 'erb'
 require 'optparse'
 
 module PocketCalendar
+  # TODO: difference expand_path and join
   PATH = File.expand_path '../..', __FILE__
   LIB_PATH = File.expand_path '..', __FILE__
-  RESOURCES_PATH = File.expand_path '../../resources', __FILE__
+  TEMPLATES_PATH = File.expand_path '../../resources/templates', __FILE__
+  LOCALES_PATH = File.expand_path '../../resources/locales', __FILE__
   CONFIG_PATH = File.expand_path '../../config', __FILE__
 end
 

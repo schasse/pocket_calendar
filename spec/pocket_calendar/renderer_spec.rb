@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe PocketCalendar::TemplateRenderer do
-  let(:renderer) { PocketCalendar::TemplateRenderer.new issues }
+describe PocketCalendar::Renderer do
+  let(:renderer) { PocketCalendar::Renderer.new issues }
   let(:issues) do
     [
       {
