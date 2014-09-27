@@ -1,15 +1,37 @@
 module PocketCalendar
-  class CalendarRenderer < Struct.new(:from_date, :to_date)
+  class CalendarRenderer < Struct.new(:from_date, :to_date, :minimum_page_count)
     def rendered_templates
-      year_week_pairs.map do |year, week|
-        [
-          WeekPageRenderer.new(year, week).rendered_template,
-          note_page_template
-        ]
-      end
+      [[timetable_page] + week_double_pages + note_pages].flatten
     end
 
     private
+
+    def timetable_page
+      TimetableRenderer.new.rendered_template
+    end
+
+    def week_double_pages
+      @week_double_pages ||= year_week_pairs.map do |year, week|
+        [
+          WeekPageRenderer.new(year, week).rendered_template,
+          left_note_page
+        ]
+      end.flatten
+    end
+
+    def left_note_page
+      @left_not_page ||= LeftNotePageRenderer.new.rendered_template
+    end
+
+    def right_note_page
+      @right_note_page ||= RightNotePageRenderer.new.rendered_template
+    end
+
+    def note_pages
+      (note_page_count / 2).times.map do
+        [left_note_page, right_note_page]
+      end.flatten + [left_note_page]
+    end
 
     def year_week_pairs(current_date = from_date)
       if to_date < current_date
@@ -20,8 +42,23 @@ module PocketCalendar
       end
     end
 
-    def note_page_template
-      @note_page_renderer ||= NotePageRenderer.new.rendered_template
+    def note_page_count
+      page_count - pages_without_note_pages
+    end
+
+    def page_count
+      [
+        next_dividable_by_4(minimum_page_count),
+        next_dividable_by_4(pages_without_note_pages)
+      ].max
+    end
+
+    def pages_without_note_pages
+      1 + week_double_pages.count
+    end
+
+    def next_dividable_by_4(n)
+      n + 4 - (n % 4)
     end
   end
 end

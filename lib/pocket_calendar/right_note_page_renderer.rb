@@ -1,8 +1,8 @@
 module PocketCalendar
-  class NotePageRenderer
+  class RightNotePageRenderer
     include Renderer
 
     TEMPLATE_PATH = File.expand_path(
-      'note_page.svg', PocketCalendar::TEMPLATES_PATH)
+      'right_note_page.svg', PocketCalendar::TEMPLATES_PATH)
   end
 end
