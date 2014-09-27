@@ -95,8 +95,8 @@ module PocketCalendar
       OptionParser.new do |opts|
         opts.banner = 'Usage: pocket_calendar [options]'
 
-        OPTIONS.values.each do |option|
-          add_option opts, option
+        OPTIONS.each do |option, option_spec|
+          add_option opts, option, option_spec
         end
 
         opts.on_tail('--version', 'Show version.') do
@@ -106,8 +106,8 @@ module PocketCalendar
       end
     end
 
-    def add_option(opts, option)
-      opts.on(*option) do |option_value|
+    def add_option(opts, option, option_spec)
+      opts.on(*option_spec) do |option_value|
         @options[option] = option_value
       end
     end

@@ -15,6 +15,7 @@ module PocketCalendar
   TEMPLATES_PATH = File.expand_path '../../resources/templates', __FILE__
   LOCALES_PATH = File.expand_path '../../resources/locales', __FILE__
   CONFIG_PATH = File.expand_path '../../config', __FILE__
+  BIN_PATH = File.expand_path '../../bin', __FILE__
 end
 
 Dir[PocketCalendar::LIB_PATH + '/**/concerns/*.rb'].each { |file| require file }
