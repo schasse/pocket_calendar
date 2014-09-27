@@ -1,21 +1,34 @@
 module PocketCalendar
   class PdfCreator < Struct.new(:svgs)
     def create_pdf
-      Prawn::Document.generate(PocketCalendar::Config.output) do |pdf|
-        svgs.each do |svg|
-          append_page pdf, svg
-          pdf.start_new_page unless pdf.page_count == svgs.size
-        end
-      end
+      concatenate_pdfs
+      cleanup
     end
 
     private
 
-    def append_page(pdf, svg)
-      pdf.svg(
-        svg,
-        at: [pdf.bounds.left, pdf.bounds.top],
-        width: pdf.bounds.width)
+    def concatenate_pdfs
+      `pdftk #{pdf_files.join(' ')} cat output #{PocketCalendar::Config.output}`
+    end
+
+    def cleanup
+      (pdf_files + svg_files).each { |tmp_file| File.delete tmp_file }
+    end
+
+    def pdf_files
+      @pdf_files ||= svg_files.map do |svg_file|
+        pdf_file = svg_file.sub 'svg', 'pdf'
+        `inkscape --file=#{svg_file} --export-pdf=#{pdf_file}`
+        pdf_file
+      end
+    end
+
+    def svg_files
+      @svg_files ||= svgs.each_with_index.map do |svg, index|
+        template_file = "/tmp/pocket_calendar.#{index}.svg"
+        File.open(template_file, 'w') { |f| f.write svg }
+        template_file
+      end
     end
   end
 end

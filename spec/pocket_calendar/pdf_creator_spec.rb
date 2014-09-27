@@ -3,7 +3,7 @@ require 'spec_helper'
 describe PocketCalendar::PdfCreator do
   let(:creator) { PocketCalendar::PdfCreator.new svgs }
   let(:svgs) { 3.times.map { svg } }
-  let(:svg) { File.read PocketCalendar::CalendarRenderer::TEMPLATE_PATH }
+  let(:svg) { File.read PocketCalendar::TimetableRenderer::TEMPLATE_PATH }
 
   describe '#create_pdf' do
     let(:generated_pdf) do
