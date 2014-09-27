@@ -14,7 +14,7 @@ module PocketCalendar
       @week_double_pages ||= year_week_pairs.map do |year, week|
         [
           WeekPageRenderer.new(year, week).rendered_template,
-          left_note_page
+          right_note_page
         ]
       end.flatten
     end

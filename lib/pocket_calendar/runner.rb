@@ -2,7 +2,7 @@ module PocketCalendar
   class Runner
     class << self
       def invoke
-        create_pdf_from rendered_templates_from
+        create_pdf_from rendered_templates
       end
 
       private
@@ -11,12 +11,12 @@ module PocketCalendar
         PdfCreator.new(templates).create_pdf
       end
 
-      def rendered_templates_from(jira_issues)
-        CalendarRenderer.new(jira_issues).rendered_templates
-      end
-
-      def jira_issues
-        JiraApi::Issue.where PocketCalendar::Config.query
+      def rendered_templates
+        CalendarRenderer.new(
+          PocketCalendar::Config.from,
+          PocketCalendar::Config.to,
+          PocketCalendar::Config.minimum_page_count)
+          .rendered_templates
       end
     end
   end

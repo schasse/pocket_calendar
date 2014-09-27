@@ -8,10 +8,12 @@ module PocketCalendar
 
     AVAILABLE_OPTIONS = {
       # TODO: from and to as dates, language some options
+      # TODO: add option printable
       from: 'The smallest date the calendar should include.',
       to: 'The biggest date the calendar should include.',
       language: 'Specifies the language of the calendar.',
-      output: 'Output file name.'
+      output: 'Output file name.',
+      minimum_page_count: 'The calendar will have at least that page count.'
     }
 
     AVAILABLE_OPTIONS.keys.each do |config|

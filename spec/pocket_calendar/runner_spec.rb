@@ -4,13 +4,14 @@ describe PocketCalendar::Runner do
   describe '.invoke' do
     let(:runner) { PocketCalendar::Runner }
     let(:generated_pdf) do
-      File.expand_path '../../../jira_issues.pdf', __FILE__
+      File.expand_path '../../../calendar.pdf', __FILE__
     end
 
     before do
-      PocketCalendar::Config.query = 'key = WBS-24'
-      PocketCalendar::Config.domain = 'jira.atlassian.com'
-      PocketCalendar::Config.output = 'jira_issues.pdf'
+      PocketCalendar::Config.from = Date.new 2014, 10, 1
+      PocketCalendar::Config.to = Date.new 2014, 11, 1
+      PocketCalendar::Config.output = 'calendar.pdf'
+      PocketCalendar::Config.minimum_page_count = 0
       runner.invoke
     end
     after { File.delete generated_pdf }
