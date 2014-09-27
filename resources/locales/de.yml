@@ -52,7 +52,7 @@ de:
     - :day
     - :month
     - :year
-    week: Wocke
+    week: Woche
   datetime:
     distance_in_words:
       about_x_hours:
