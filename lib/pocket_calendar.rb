@@ -7,6 +7,7 @@ require 'yaml'
 require 'erb'
 require 'optparse'
 require 'optparse/date'
+require 'holidays'
 
 module PocketCalendar
   # TODO: difference expand_path and join

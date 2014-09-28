@@ -24,6 +24,7 @@ desc
 
   s.add_runtime_dependency 'activesupport'
   s.add_runtime_dependency 'i18n'
+  s.add_runtime_dependency 'holidays'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-its'

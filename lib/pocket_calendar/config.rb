@@ -19,6 +19,10 @@ module PocketCalendar
         '-l', '--language LANGUAGE', [:de, :en],
         'Specifies the language of the calendar.'
       ],
+      holidays: [
+        '-h', '--holidays COUNTRY', Holidays.available,
+        'Specifies the country for holidays.'
+      ],
       output: ['-o', '--output FILE', 'Output file name.'],
       minimum_page_count: [
         '-mpg', '--minimum_page_count N', Integer,

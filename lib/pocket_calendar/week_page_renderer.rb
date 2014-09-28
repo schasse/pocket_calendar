@@ -6,7 +6,7 @@ module PocketCalendar
     TEMPLATE_PATH = File.expand_path(
       'week_page.svg', PocketCalendar::TEMPLATES_PATH)
 
-    helpers_for :week_day_translations, :days_of_month
+    helpers_for :week_day_translations, :days_of_month_and_holiday
 
     def month_name
       [
