@@ -9,7 +9,7 @@ module PocketCalendar
       thursday: 4,
       friday: 5,
       saturday: 6,
-      sunday: 0
+      sunday: 7
     }
 
     module ClassMethods
@@ -27,7 +27,7 @@ module PocketCalendar
 
       def define_week_day_translations
         WEEK_DAYS.each do |day, cwday|
-          define_method(day) { translate_day cwday }
+          define_method(day) { translate_day(cwday % 7) }
         end
       end
 

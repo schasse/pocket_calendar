@@ -7,6 +7,7 @@ describe PocketCalendar::WeekPageRenderer do
   its(:monday) { should eq 'Monday' }
   its(:sunday) { should eq 'Sunday' }
   its(:mondays_day_of_month) { should eq 22 }
+  its(:sundays_day_of_month) { should eq 28 }
   its(:mondays_holiday) { should eq nil }
   its(:mondays_day_of_month_and_holiday) { should eq '22' }
   its(:month_name) { should eq 'September' }
