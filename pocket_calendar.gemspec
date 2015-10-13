@@ -7,13 +7,13 @@ Gem::Specification.new do |s|
   s.date         = Time.now.strftime('%Y-%m-%d')
   s.summary      = 'Create your diy pocket calendar with PocketCalendar.'
   s.homepage     = 'http://github.com/schasse/pocket_calendar'
-  s.email        = 'sebastian.schasse@gapfish.com'
+  s.email        = 'mail@sebastianschasse.de'
   s.authors      = ['schasse']
   s.has_rdoc     = false
   s.licenses     = ['MIT']
 
   s.description  = <<desc
-  With PocketCalendar you can print Jira issues in a pdf.
+  With PocketCalendar you can print a calendar in a pdf.
 desc
 
   s.files        = Dir['{bin,lib,resources,config}/**/*']
