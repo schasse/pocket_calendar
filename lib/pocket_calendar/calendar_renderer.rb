@@ -48,7 +48,7 @@ module PocketCalendar
 
     def page_count
       [
-        next_dividable_by_4(PocketCalendar::Config.minimum_page_count),
+        next_dividable_by_4(PocketCalendar::Config.minimum_page_count || 0),
         next_dividable_by_4(pages_without_note_pages)
       ].max
     end

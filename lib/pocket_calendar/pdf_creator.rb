@@ -30,7 +30,7 @@ module PocketCalendar
 
     def svg_files
       @svg_files ||= svgs.each_with_index.map do |svg, index|
-        template_file = "/tmp/pocket_calendar.#{index}.svg"
+        template_file = "tmp/pocket_calendar.#{index}.svg"
         File.open(template_file, 'w') { |f| f.write svg }
         template_file
       end
