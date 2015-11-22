@@ -67,7 +67,8 @@ module PocketCalendar
     end
 
     def translate_day(cwday)
-      I18n.translate('date.day_names')[cwday]
+      I18n.translate(
+        'date.day_names', locale: PocketCalendar::Config.language)[cwday]
     end
   end
 end

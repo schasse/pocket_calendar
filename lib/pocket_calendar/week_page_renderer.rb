@@ -10,13 +10,14 @@ module PocketCalendar
 
     def month_name
       [
-        I18n.translate('date.month_names')[monday_date.month],
-        I18n.translate('date.month_names')[sunday_date.month]
+        I18n.translate('date.month_names', locale: locale)[monday_date.month],
+        I18n.translate('date.month_names', locale: locale)[sunday_date.month]
       ].uniq.join ' - '
     end
 
     def week
-      I18n.translate 'date.week'
+
+      I18n.translate 'date.week', locale: locale
     end
 
     private
@@ -27,6 +28,10 @@ module PocketCalendar
 
     def sunday_date
       @sunday_date ||= monday_date.days_since 7
+    end
+
+    def locale
+      PocketCalendar::Config.language
     end
   end
 end
