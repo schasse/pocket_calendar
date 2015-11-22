@@ -33,12 +33,17 @@ module PocketCalendar
       end.flatten + [left_note_page]
     end
 
-    def year_week_pairs(current_date = PocketCalendar::Config.from)
+    def year_week_pairs
+      monday_before = PocketCalendar::Config.from.at_beginning_of_week
+      year_week_pairs_helper(monday_before)
+    end
+
+    def year_week_pairs_helper(current_date)
       if PocketCalendar::Config.to < current_date
         []
       else
         [[current_date.year, current_date.cweek]] +
-          year_week_pairs(current_date.weeks_since 1)
+          year_week_pairs_helper(current_date.weeks_since 1)
       end
     end
 

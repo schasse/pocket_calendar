@@ -26,5 +26,20 @@ describe PocketCalendar::CalendarRenderer do
     subject { renderer.send :year_week_pairs }
     its(:first) { should eq [2014, 40] }
     its(:last) { should eq [2015, 14] }
+
+    context 'with Dates 2015/16' do
+      before do
+        PocketCalendar::Config.from = Date.new 2015, 11, 22
+        PocketCalendar::Config.to = Date.new 2016, 5, 22
+        PocketCalendar::Config.minimum_page_count = 60
+      end
+
+      it 'is an array of existing weeks and years' do
+        subject.each do |year, week_of_year|
+          expect { Date.commercial year, week_of_year }
+            .to_not raise_error
+        end
+      end
+    end
   end
 end
