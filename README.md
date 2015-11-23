@@ -1,6 +1,6 @@
 pocket_calendar
 =========
- TODO
+still some TODOs
 
 # Installation
 `bundle`
