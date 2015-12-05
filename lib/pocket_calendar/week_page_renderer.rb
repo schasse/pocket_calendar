@@ -16,7 +16,6 @@ module PocketCalendar
     end
 
     def week
-
       I18n.translate 'date.week', locale: locale
     end
 

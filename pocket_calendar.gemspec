@@ -26,6 +26,7 @@ desc
   s.add_runtime_dependency 'i18n'
   s.add_runtime_dependency 'holidays', '~> 1.0'
 
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-its'
   s.add_development_dependency 'simplecov'

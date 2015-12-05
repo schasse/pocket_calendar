@@ -13,11 +13,15 @@ module PocketCalendar
     end
 
     def make_printable
-      `pdfbook --short-edge #{PocketCalendar::Config.output}`
+      cmd = 'pdfbook '\
+            "--short-edge #{PocketCalendar::Config.output} "\
+            "--outfile #{PocketCalendar::Config.output}"
+      `#{cmd}`
     end
 
     def cleanup
       (pdf_files + svg_files).each { |tmp_file| File.delete tmp_file }
+      Dir.rmdir tmp_folder
     end
 
     def pdf_files
@@ -30,10 +34,17 @@ module PocketCalendar
 
     def svg_files
       @svg_files ||= svgs.each_with_index.map do |svg, index|
-        template_file = "/tmp/pocket_calendar.#{index}.svg"
+        template_file = File.join tmp_folder, "pocket_calendar.#{index}.svg"
         File.open(template_file, 'w') { |f| f.write svg }
         template_file
       end
+    end
+
+    def tmp_folder
+      return @tmp_folder if @tmp_folder
+      random = SecureRandom.hex 4
+      Dir.mkdir(File.join('/tmp', random))
+      @tmp_folder = File.join('/tmp', random)
     end
   end
 end

@@ -17,7 +17,9 @@ describe PocketCalendar::WeekPageRenderer do
   its(:rendered_template) { should_not include CGI.escapeHTML '<%= monday %>' }
 
   context 'with german configuration' do
-    before { PocketCalendar::Config.holidays = I18n.locale = 'de' }
+    before do
+      PocketCalendar::Config.holidays = PocketCalendar::Config.language = 'de'
+    end
     its(:monday) { should eq 'Montag' }
     context 'when week is with a holiday' do
       let(:week) { 40 }
