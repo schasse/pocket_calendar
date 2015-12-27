@@ -2,18 +2,17 @@ require 'spec_helper'
 
 describe PocketCalendar::Runner do
   describe '.invoke' do
-    let(:runner) { PocketCalendar::Runner }
-    let(:generated_pdf) do
-      File.expand_path '../../../calendar.pdf', __FILE__
+    let(:runner) { PocketCalendar::Runner.new argv }
+    let(:generated_pdf) { 'tmp/calendar.pdf' }
+    let(:argv) do
+      %w(
+        --from 2014-10-1
+        --to 2014-11-1
+        --output tmp/calendar.pdf
+        --minimum_page_count 0)
     end
 
-    before do
-      PocketCalendar::Config.from = Date.new 2014, 10, 1
-      PocketCalendar::Config.to = Date.new 2014, 11, 1
-      PocketCalendar::Config.output = 'calendar.pdf'
-      PocketCalendar::Config.minimum_page_count = 0
-      runner.invoke
-    end
+    before { runner.invoke }
     after { File.delete generated_pdf }
 
     it 'creates a pdf file' do

@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe PocketCalendar::WeekPageRenderer do
-  before { PocketCalendar::Config.language = 'en' }
-  subject(:renderer) { PocketCalendar::WeekPageRenderer.new 2014, week }
+  let(:config) { PocketCalendar::Config.new }
+  before { config.language = 'en' }
+  subject(:renderer) { PocketCalendar::WeekPageRenderer.new 2014, week, config }
   let(:week) { 39 }
   its(:monday) { should eq 'Monday' }
   its(:sunday) { should eq 'Sunday' }
@@ -18,7 +19,7 @@ describe PocketCalendar::WeekPageRenderer do
 
   context 'with german configuration' do
     before do
-      PocketCalendar::Config.holidays = PocketCalendar::Config.language = 'de'
+      config.holidays = config.language = 'de'
     end
     its(:monday) { should eq 'Montag' }
     context 'when week is with a holiday' do
@@ -27,11 +28,10 @@ describe PocketCalendar::WeekPageRenderer do
         should end_with 'Tag der Deutschen Einheit'
       end
     end
-    after { I18n.locale = 'en' }
   end
 
   context 'when week is in two months' do
-    subject(:renderer) { PocketCalendar::WeekPageRenderer.new 2014, 40 }
+    subject(:renderer) { PocketCalendar::WeekPageRenderer.new 2014, 40, config }
     its(:month_name) { should eq 'September - October' }
   end
 end

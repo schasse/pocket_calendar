@@ -1,21 +1,21 @@
 module PocketCalendar
-  class PdfCreator < Struct.new(:svgs)
+  class PdfCreator < Struct.new(:svgs, :config)
     def create_pdf
       concatenate_pdfs
-      make_printable if PocketCalendar::Config.printversion
+      make_printable if config.printversion
       cleanup
     end
 
     private
 
     def concatenate_pdfs
-      `pdftk #{pdf_files.join(' ')} cat output #{PocketCalendar::Config.output}`
+      `pdftk #{pdf_files.join(' ')} cat output #{config.output}`
     end
 
     def make_printable
       cmd = 'pdfbook '\
-            "--short-edge #{PocketCalendar::Config.output} "\
-            "--outfile #{PocketCalendar::Config.output}"
+            "--short-edge #{config.output} "\
+            "--outfile #{config.output}"
       `#{cmd}`
     end
 
@@ -43,8 +43,9 @@ module PocketCalendar
     def tmp_folder
       return @tmp_folder if @tmp_folder
       random = SecureRandom.hex 4
-      Dir.mkdir(File.join('/tmp', random))
-      @tmp_folder = File.join('/tmp', random)
+      # FIX: change to root again
+      Dir.mkdir(File.join('tmp', random))
+      @tmp_folder = File.join('tmp', random)
     end
   end
 end
