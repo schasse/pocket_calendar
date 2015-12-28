@@ -10,7 +10,10 @@ describe "PocketCalendar's binstub" do
     end
     let(:output_file) { 'tmp/calendar.pdf' }
 
-    before { `#{command}` }
+    before do
+      Dir.mkdir 'tmp' unless File.exist? 'tmp'
+      `#{command}`
+    end
     after { File.delete output_file }
 
     it 'creates a pdf file' do

@@ -12,7 +12,10 @@ describe PocketCalendar::Runner do
         --minimum_page_count 0)
     end
 
-    before { runner.invoke }
+    before do
+      Dir.mkdir 'tmp' unless File.exist? 'tmp'
+      runner.invoke
+    end
     after { File.delete generated_pdf }
 
     it 'creates a pdf file' do
