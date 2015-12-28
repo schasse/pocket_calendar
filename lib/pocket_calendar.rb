@@ -1,5 +1,4 @@
 require 'cgi'
-require 'active_support/configurable'
 require 'active_support/concern'
 require 'active_support/core_ext/date'
 require 'i18n'
@@ -21,3 +20,7 @@ end
 
 Dir[PocketCalendar::LIB_PATH + '/**/concerns/*.rb'].each { |file| require file }
 Dir[PocketCalendar::LIB_PATH + '/**/*.rb'].each { |file| require file }
+
+I18n.enforce_available_locales = false
+I18n.load_path = Dir[PocketCalendar::LOCALES_PATH + '/*.yml']
+I18n.backend.load_translations

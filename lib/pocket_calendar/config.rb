@@ -1,7 +1,5 @@
 module PocketCalendar
-  class Config < Struct.new(:argv)
-    include ActiveSupport::Configurable
-
+  class Config
     DEFAULT_CONFIG = File.expand_path 'default.yml', PocketCalendar::CONFIG_PATH
     HOME_CONFIG = File.expand_path '~/.pocket_calendar'
     LOCAL_CONFIG = File.expand_path '.pocket_calendar'
@@ -32,44 +30,23 @@ module PocketCalendar
     }
 
     OPTIONS.keys.each do |config|
-      config_accessor config
+      attr_accessor config
     end
 
-    class << self
-      def load(argv = nil)
-        configure_pocket_calendar argv
-        configure_i18n
-      end
-
-      def reset
-        OPTIONS.keys.each do |option|
-          send "#{option}=", nil
-        end
-        I18n.locale = 'en'
-      end
-
-      private
-
-      def configure_pocket_calendar(argv)
-        config = new argv
-        OPTIONS.keys.each do |option|
-          option_value = config.options[option]         ||
-            config.local_config[option.to_s]            ||
-            config.home_config[option.to_s]             ||
-            ENV['POCKET_CALENDAR' + option.to_s.upcase] ||
-            config.default_config[option.to_s]
-          send "#{option}=", option_value
-        end
-      end
-
-      def configure_i18n
-        # TODO: configurable locale file
-        I18n.enforce_available_locales = false
-        I18n.load_path = Dir[PocketCalendar::LOCALES_PATH + '/*.yml']
-        I18n.backend.load_translations
-        I18n.locale = language
+    def load(argv = nil)
+      options = parsed_options(argv)
+      OPTIONS.keys.each do |option|
+        option_value =
+          options[option.to_sym] ||
+          local_config[option.to_s] ||
+          home_config[option.to_s] ||
+          ENV['POCKET_CALENDAR_' + option.to_s.upcase] ||
+          default_config[option.to_s]
+        send "#{option}=", option_value
       end
     end
+
+    private
 
     def default_config
       @default_config ||= YAML.load File.read DEFAULT_CONFIG
@@ -85,35 +62,25 @@ module PocketCalendar
         (File.exist?(LOCAL_CONFIG) && YAML.load(File.read(LOCAL_CONFIG))) || {}
     end
 
-    def options
-      unless @options
-        @options = {}
-        option_parser.parse argv
-      end
-      @options
-    end
-
-    private
-
-    def option_parser
+    # rubocop:disable Metrics/MethodLength
+    def parsed_options(argv)
+      parsed_options = {}
       OptionParser.new do |opts|
         opts.banner = 'Usage: pocket_calendar [options]'
 
         OPTIONS.each do |option, option_spec|
-          add_option opts, option, option_spec
+          opts.on(*option_spec) do |option_value|
+            parsed_options[option] = option_value
+          end
         end
 
         opts.on_tail('--version', 'Show version.') do
           puts PocketCalendar::VERSION
           exit
         end
-      end
+      end.parse argv
+      parsed_options
     end
-
-    def add_option(opts, option, option_spec)
-      opts.on(*option_spec) do |option_value|
-        @options[option] = option_value
-      end
-    end
+    # rubocop:endable Metrics/MethodLength
   end
 end

@@ -13,21 +13,21 @@ module PocketCalendar
     }
 
     module ClassMethods
-      def helpers_for(*subjects)
-        define_week_day_translations if subjects.include? :week_day_translations
-        if (subjects & [:days_of_month, :days_of_month_and_holiday]).any?
-          define_days_of_month
-        end
-        return unless subjects.include? :days_of_month_and_holiday
+      def helpers_for_days_of_month_and_holiday
+        define_days_of_month
         define_days_holiday
         define_days_of_month_and_holiday
+      end
+
+      def helpers_for_week_day_translations
+        define_week_day_translations
       end
 
       private
 
       def define_week_day_translations
         WEEK_DAYS.each do |day, cwday|
-          define_method(day) { translate_day(cwday % 7) }
+          define_method(day) { translate_day((cwday % 7), language) }
         end
       end
 
@@ -51,10 +51,10 @@ module PocketCalendar
       def define_days_holiday
         WEEK_DAYS.each do |day, cwday|
           define_method("#{day}s_holiday") do
-            return if PocketCalendar::Config.holidays.blank?
+            return if config_holidays.blank?
             holidays = Holidays.on(
               monday_date.days_since(cwday - 1),
-              PocketCalendar::Config.holidays)
+              config_holidays)
             return if holidays.empty?
             '☼ ' + holidays.map { |holiday| holiday[:name] }.join(', ')
           end
@@ -66,9 +66,9 @@ module PocketCalendar
       fail 'implement me for use of days_of_month'
     end
 
-    def translate_day(cwday)
+    def translate_day(cwday, language)
       I18n.translate(
-        'date.day_names', locale: PocketCalendar::Config.language)[cwday]
+        'date.day_names', locale: language)[cwday]
     end
   end
 end

@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe PocketCalendar::CalendarRenderer do
-  let(:renderer) { PocketCalendar::CalendarRenderer.new }
+  let(:config) { PocketCalendar::Config.new }
+  let(:renderer) { PocketCalendar::CalendarRenderer.new config }
 
   before do
-    PocketCalendar::Config.from = Date.new 2014, 10, 1
-    PocketCalendar::Config.to = Date.new 2015, 4, 1
-    PocketCalendar::Config.minimum_page_count = 60
+    config.load
+    config.from = Date.new 2014, 10, 1
+    config.to = Date.new 2015, 4, 1
+    config.minimum_page_count = 60
   end
 
   describe '#rendered_templates' do
@@ -29,9 +31,9 @@ describe PocketCalendar::CalendarRenderer do
 
     context 'with Dates 2015/16' do
       before do
-        PocketCalendar::Config.from = Date.new 2015, 11, 22
-        PocketCalendar::Config.to = Date.new 2016, 5, 22
-        PocketCalendar::Config.minimum_page_count = 60
+        config.from = Date.new 2015, 11, 22
+        config.to = Date.new 2016, 5, 22
+        config.minimum_page_count = 60
       end
 
       it 'is an array of existing weeks and years' do

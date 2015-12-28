@@ -1,11 +1,15 @@
 module PocketCalendar
-  class TimetableRenderer
+  class TimetableRenderer < Struct.new(:config)
     include Renderer
     include RenderHelper
 
     TEMPLATE_PATH = File.expand_path(
       'timetable.svg', PocketCalendar::TEMPLATES_PATH)
 
-    helpers_for :week_day_translations
+    helpers_for_week_day_translations
+
+    def language
+      config.language
+    end
   end
 end

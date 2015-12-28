@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe PocketCalendar::PdfCreator do
-  let(:creator) { PocketCalendar::PdfCreator.new svgs }
+  let(:config) { PocketCalendar::Config.new }
+  let(:creator) { PocketCalendar::PdfCreator.new svgs, config }
   let(:svgs) { 3.times.map { svg } }
   let(:svg) { File.read PocketCalendar::TimetableRenderer::TEMPLATE_PATH }
 
@@ -11,7 +12,7 @@ describe PocketCalendar::PdfCreator do
     end
     let(:page_count) { Prawn::Document.new(template: generated_pdf).page_count }
     before do
-      PocketCalendar::Config.output = 'calendar.pdf'
+      config.output = 'calendar.pdf'
       creator.create_pdf
     end
     after { File.delete generated_pdf }

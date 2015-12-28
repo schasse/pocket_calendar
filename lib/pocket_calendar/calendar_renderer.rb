@@ -1,5 +1,5 @@
 module PocketCalendar
-  class CalendarRenderer
+  class CalendarRenderer < Struct.new(:config)
     def rendered_templates
       [[timetable_page] + week_double_pages + note_pages].flatten
     end
@@ -7,13 +7,13 @@ module PocketCalendar
     private
 
     def timetable_page
-      TimetableRenderer.new.rendered_template
+      TimetableRenderer.new(config).rendered_template
     end
 
     def week_double_pages
       @week_double_pages ||= year_week_pairs.map do |year, week|
         [
-          WeekPageRenderer.new(year, week).rendered_template,
+          WeekPageRenderer.new(year, week, config).rendered_template,
           right_note_page
         ]
       end.flatten
@@ -34,12 +34,12 @@ module PocketCalendar
     end
 
     def year_week_pairs
-      monday_before = PocketCalendar::Config.from.at_beginning_of_week
+      monday_before = config.from.at_beginning_of_week
       year_week_pairs_helper(monday_before)
     end
 
     def year_week_pairs_helper(current_date)
-      if PocketCalendar::Config.to < current_date
+      if config.to < current_date
         []
       else
         [[current_date.year, current_date.cweek]] +
@@ -53,7 +53,7 @@ module PocketCalendar
 
     def page_count
       [
-        next_dividable_by_4(PocketCalendar::Config.minimum_page_count || 0),
+        next_dividable_by_4(config.minimum_page_count || 0),
         next_dividable_by_4(pages_without_note_pages)
       ].max
     end
