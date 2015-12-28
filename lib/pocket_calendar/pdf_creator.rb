@@ -43,7 +43,6 @@ module PocketCalendar
     def tmp_folder
       return @tmp_folder if @tmp_folder
       random = SecureRandom.hex 4
-      # FIX: change to root again
       Dir.mkdir(File.join('tmp', random))
       @tmp_folder = File.join('tmp', random)
     end

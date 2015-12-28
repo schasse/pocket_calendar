@@ -48,10 +48,6 @@ module PocketCalendar
 
     private
 
-    def configure_i18n
-      # TODO: configurable locale file? or load I18n elsewhere
-    end
-
     def default_config
       @default_config ||= YAML.load File.read DEFAULT_CONFIG
     end
